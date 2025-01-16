@@ -52,7 +52,7 @@ public class TestConfig implements CommandLineRunner{
 		Task t2 = new Task(null,"Work",
 				"Lorem ipsum dolor",
 				Instant.parse("2024-12-27T08:00:07Z"),
-				Instant.parse("2024-12-21T17:10:07Z"),
+				Instant.parse("2024-12-27T17:10:07Z"),
 				TaskStatus.DONE,
 				Priority.HIGH,
 				c4,

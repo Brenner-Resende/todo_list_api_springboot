@@ -12,6 +12,7 @@ import com.brennerresende.todolist.entities.Task;
 import com.brennerresende.todolist.entities.enums.TaskStatus;
 import com.brennerresende.todolist.repositories.TaskRepository;
 import com.brennerresende.todolist.services.exceptions.DatabaseException;
+import com.brennerresende.todolist.services.exceptions.InvalidDataInput;
 import com.brennerresende.todolist.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -71,7 +72,7 @@ public class TaskService {
     private void validateTaskDates(Task obj) {
         if (obj.getConclusionDate() != null && obj.getCreateDate() != null) {
             if (obj.getConclusionDate().isBefore(obj.getCreateDate())) {
-                throw new IllegalArgumentException("The conclusion date must be after the creation date.");
+                throw new InvalidDataInput("The conclusion date must be after the creation date.");
             }
         }
     }
@@ -81,7 +82,7 @@ public class TaskService {
 
         if (obj.getTaskStatus() == TaskStatus.DONE) {
             if (obj.getConclusionDate() == null) {
-                throw new IllegalArgumentException("A task cannot be marked as DONE without a valid conclusion date.");
+                throw new InvalidDataInput("A task cannot be marked as DONE without a valid conclusion date.");
             }
         }
 

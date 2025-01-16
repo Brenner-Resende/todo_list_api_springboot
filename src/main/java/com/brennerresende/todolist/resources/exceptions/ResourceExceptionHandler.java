@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.brennerresende.todolist.services.exceptions.DatabaseException;
+import com.brennerresende.todolist.services.exceptions.InvalidDataInput;
 import com.brennerresende.todolist.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +25,13 @@ public class ResourceExceptionHandler {
 	@ExceptionHandler(DatabaseException.class)
 	public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest req){
 		String error = "Database error";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), req.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+	@ExceptionHandler(InvalidDataInput.class)
+	public ResponseEntity<StandardError> invalidDataInput(InvalidDataInput e, HttpServletRequest req){
+		String error = "Invalid data input";
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), req.getRequestURI());
 		return ResponseEntity.status(status).body(err);
