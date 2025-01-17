@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.brennerresende.todolist.entities.Category;
 import com.brennerresende.todolist.entities.Task;
@@ -27,12 +28,14 @@ public class TestConfig implements CommandLineRunner{
 	private TaskRepository taskRepository;
 	@Autowired
 	private CategoryRepository categoryRepository;
-
+	@Autowired
+    private PasswordEncoder passwordEncoder;
 	@Override
 	public void run(String... args) throws Exception {
 		
-		User u1 = new User(null, "Maria Brown", "maria@gmail.com");
-		User u2 = new User(null, "Alex Green", "alex@gmail.com");
+		User u1 = new User(null, "Maria Brown", "maria@gmail.com", passwordEncoder.encode("123456"), "ROLE_USER");
+        User u2 = new User(null, "Alex Green", "alex@gmail.com", passwordEncoder.encode("123456"), "ROLE_ADMIN");
+        User u3 = new User(null, "Carl Purple", "carl@gmail.com", passwordEncoder.encode("123456"), "ROLE_USER");
 		
 		Category c1 = new Category(null, "Selfcare", null);
 		Category c2 = new Category(null, "Studies", null);
@@ -58,7 +61,7 @@ public class TestConfig implements CommandLineRunner{
 				c4,
 				u2);
 		
-		userRepository.saveAll(Arrays.asList(u1,u2));
+		userRepository.saveAll(Arrays.asList(u1,u2, u3));
 		taskRepository.saveAll(Arrays.asList(t1, t2));
 	}
 }
